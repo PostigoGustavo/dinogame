@@ -14,9 +14,9 @@ float speed = 10;
 int groundHeight = 50;
 int playerXpos = 100;
 int highScore = 0;
+String cor = "yellow"; // Variável de cor inicializada como "yellow"
 
 boolean exibindoCreditos = false;
-
 
 Player dino;
 
@@ -39,11 +39,11 @@ void setup() {
   cp5 = new ControlP5(this);
   
   // Carrega as imagens (adaptar o caminho para o seu ambiente)
-  dinoRun1 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinorun0000.png");
-  dinoRun2 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinorun0001.png");
-  dinoJump = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinoJump0000.png");
-  dinoDuck = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinoduck0000.png");
-  dinoDuck1 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinoduck0001.png");
+  dinoRun1 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinorun0000" + cor + ".png");
+  dinoRun2 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinorun0001" + cor + ".png");
+  dinoJump = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinoJump0000" + cor + ".png");
+  dinoDuck = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinoduck0000" + cor + ".png");
+  dinoDuck1 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinoduck0001" + cor + ".png");
   smallCactus = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/cactusSmall0000.png");
   bigCactus = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/cactusBig0000.png");
   manySmallCactus = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/cactusSmallMany0000.png");
@@ -68,12 +68,29 @@ void setup() {
    .addItem("Facil", 0)
    .addItem("Normal", 1)
    .addItem("Dificil", 2);
-
-
-
+  
+  // Adiciona o seletor de cores
+  cp5.addDropdownList("seletorDeCor")
+   .setPosition(10, 150) // Posição abaixo do seletor de dificuldade
+   .setSize(180, 180) // Tamanho do seletor
+   .setCaptionLabel("Cor do Dino")
+   .setItemHeight(20) // Altura dos itens
+   .setBarHeight(20) // Altura da barra
+   .setFont(createFont("Arial", 14)) // Fonte e tamanho do seletor
+   .addListener(new ControlListener() {
+      public void controlEvent(ControlEvent e) {
+        cor = cp5.get(DropdownList.class, "seletorDeCor").getItem((int) e.getValue()).get("name").toString();
+        atualizarImagensDino(); // Atualiza as imagens do dino com a nova cor
+      }
+   })
+   .addItem("vermelho", 0)
+   .addItem("verde", 1)
+   .addItem("azul", 2)
+   .addItem("amarelo", 3)
+   .addItem("roxo", 4)
+   .addItem("preto", 5);
   
   // Adiciona os botões do menu
- 
   cp5.addButton("iniciarButton")
      .setPosition(width / 2 - 100, height / 2 - 60)
      .setSize(200, 50)
@@ -96,17 +113,16 @@ void setup() {
        }
      });
 
-cp5.addButton("creditosButton")
-   .setPosition(10, height - 60) // Posição no canto esquerdo inferior
-   .setSize(100, 40)
-   .setCaptionLabel("Créditos")
-   .setFont(createFont("Arial", 14)) // Escolha da fonte
-   .onClick(new CallbackListener() {
-     public void controlEvent(CallbackEvent e) {
-       exibirCreditos();
-     }
-   });
-
+  cp5.addButton("creditosButton")
+     .setPosition(10, height - 60) // Posição no canto esquerdo inferior
+     .setSize(100, 40)
+     .setCaptionLabel("Créditos")
+     .setFont(createFont("Arial", 14)) // Escolha da fonte
+     .onClick(new CallbackListener() {
+       public void controlEvent(CallbackEvent e) {
+         exibirCreditos();
+       }
+     });
 }
 
 void draw() {
@@ -119,10 +135,12 @@ void draw() {
       cp5.getController("iniciarButton").setVisible(true);
       cp5.getController("sairButton").setVisible(true);
       cp5.getController("dificuldade").setVisible(true);
+      cp5.getController("seletorDeCor").setVisible(true);
     } else {
       cp5.getController("iniciarButton").setVisible(false);
       cp5.getController("sairButton").setVisible(false);
       cp5.getController("dificuldade").setVisible(false);
+      cp5.getController("seletorDeCor").setVisible(false);
     }
   } else if (estado == 1) {
     // Desenha o jogo
@@ -140,11 +158,8 @@ void draw() {
     text("Gustavo Postigo Santos", width / 2, height / 2); 
     text("Gabriel Oliveira Grola", width / 2, height / 2);
     text("João Pedro Aranda Ziemann", width / 2, height / 2);
-    
-    
   }
 }
-
 
 void desenhaMenu() {
   background(50, 100, 150);
@@ -185,6 +200,8 @@ void iniciarJogo() {
   cp5.getController("iniciarButton").hide(); // Oculta o botão "Iniciar Jogo"
   cp5.getController("sairButton").hide(); // Oculta o botão "Sair"
   cp5.getController("dificuldade").hide(); // Oculta o seletor de dificuldade
+  cp5.getController("creditosButton").hide(); // Oculta o botão "Créditos"
+  cp5.getController("seletorDeCor").hide(); // Oculta o seletor de cor
 }
 
 void sairJogo() {
@@ -197,8 +214,8 @@ void exibirCreditos() {
   cp5.getController("iniciarButton").hide();
   cp5.getController("sairButton").hide();
   cp5.getController("dificuldade").hide();
+  cp5.getController("seletorDeCor").hide();
 }
-
 
 void keyPressed() {
   if (estado == 1) {
@@ -259,7 +276,7 @@ void updateObstacles() {
 }
 
 void showObstacles() {
-   for (int i = 0; i < grounds.size(); i++) {
+  for (int i = 0; i < grounds.size(); i++) {
     grounds.get(i).show();
   }
   for (int i = 0; i < obstacles.size(); i++) {
@@ -321,6 +338,8 @@ void reset() {
   cp5.getController("iniciarButton").show(); // Mostra o botão "Iniciar Jogo"
   cp5.getController("sairButton").show(); // Mostra o botão "Sair"
   cp5.getController("dificuldade").show(); // Mostra o seletor de dificuldade
+  cp5.getController("creditosButton").show();
+  cp5.getController("seletorDeCor").show(); // Mostra o seletor de cor
 }
 
 void mousePressed() {
@@ -329,10 +348,15 @@ void mousePressed() {
     cp5.getController("iniciarButton").show();
     cp5.getController("sairButton").show();
     cp5.getController("dificuldade").show();
+    cp5.getController("seletorDeCor").show(); // Mostra o seletor de cor ao voltar do créditos
   }
 }
 
-
-void dificuldade(int n) {
-  dificuldade = n;
+void atualizarImagensDino() {
+  // Atualiza as imagens do Dino com base na cor selecionada
+  dinoRun1 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinorun0000" + cor + ".png");
+  dinoRun2 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinorun0001" + cor + ".png");
+  dinoJump = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinoJump0000" + cor + ".png");
+  dinoDuck = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinoduck0000" + cor + ".png");
+  dinoDuck1 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinoduck0001" + cor + ".png");
 }
