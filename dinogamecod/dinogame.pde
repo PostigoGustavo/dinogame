@@ -43,19 +43,19 @@ void setup() {
   cp5 = new ControlP5(this);
   
   // Carrega as imagens (adaptar o caminho para o seu ambiente)
-  dinoRun1 = loadImage("C:/Users/belef/OneDrive/Documentos/Facul/Computação Visual/projeto_jogo/dinogame/dinorun0000" + cor + ".png");
-  dinoRun2 = loadImage("C:/Users/belef/OneDrive/Documentos/Facul/Computação Visual/projeto_jogo/dinogame/dinorun0001" + cor + ".png");
-  dinoJump = loadImage("C:/Users/belef/OneDrive/Documentos/Facul/Computação Visual/projeto_jogo/dinogame/dinoJump0000" + cor + ".png");
-  dinoDuck = loadImage("C:/Users/belef/OneDrive/Documentos/Facul/Computação Visual/projeto_jogo/dinogame/dinoduck0000" + cor + ".png");
-  dinoDuck1 = loadImage("C:/Users/belef/OneDrive/Documentos/Facul/Computação Visual/projeto_jogo/dinogame/dinoduck0001" + cor + ".png");
-  smallCactus = loadImage("C:/Users/belef/OneDrive/Documentos/Facul/Computação Visual/projeto_jogo/dinogame/cactusSmall0000.png");
-  bigCactus = loadImage("C:/Users/belef/OneDrive/Documentos/Facul/Computação Visual/projeto_jogo/dinogame/cactusBig0000.png");
-  manySmallCactus = loadImage("C:/Users/belef/OneDrive/Documentos/Facul/Computação Visual/projeto_jogo/dinogame/cactusSmallMany0000.png");
-  bird = loadImage("C:/Users/belef/OneDrive/Documentos/Facul/Computação Visual/projeto_jogo/dinogame/berd.png");
-  bird1 = loadImage("C:/Users/belef/OneDrive/Documentos/Facul/Computação Visual/projeto_jogo/dinogame/berd2.png");
+  dinoRun1 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinogamecod/dinorun0000" + cor + ".png");
+  dinoRun2 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinogamecod/dinorun0001" + cor + ".png");
+  dinoJump = loadImage("C:/C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinogamecod/dinoJump0000" + cor + ".png");
+  dinoDuck = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinogamecod/dinoduck0000" + cor + ".png");
+  dinoDuck1 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinogamecod/dinoduck0001" + cor + ".png");
+  smallCactus = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinogamecod/cactusSmall0000.png");
+  bigCactus = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinogamecod/cactusBig0000.png");
+  manySmallCactus = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinogamecod/cactusSmallMany0000.png");
+  bird = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinogamecod/berd.png");
+  bird1 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinogamecod/berd2.png");
  
-  jumpSound = new SoundFile(this, "C:/Users/belef/OneDrive/Documentos/Facul/Computação Visual/projeto_jogo/dinogame/dinoJumpSound.mp3");
-  deathSound = new SoundFile(this, "C:/Users/belef/OneDrive/Documentos/Facul/Computação Visual/projeto_jogo/dinogame/dinoDeathSound.mp3");
+  jumpSound = new SoundFile(this, "C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinogamecod/dinoJumpSound.mp3");
+  deathSound = new SoundFile(this, "C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinogamecod/dinoDeathSound.mp3");
   
   dino = new Player();
   
@@ -161,10 +161,12 @@ void draw() {
     textSize(20); // Tamanho do texto
     textAlign(CENTER, CENTER); // Alinhamento centralizado
     
-    text("Desenvolvido por:", width / 2, height / 2 - 40);
-    text("Gustavo Postigo Santos", width / 2, height / 2); 
-    text("Gabriel Oliveira Grola", width / 2, height / 2);
-    text("João Pedro Aranda Ziemann", width / 2, height / 2);
+    text("Desenvolvido por:", width / 2, height / 2 - 100);
+    text("Gustavo Postigo Santos", width / 2, height / 2 - 75); 
+    text("Gabriel Oliveira Grola", width / 2, height / 2 - 50);
+    text("João Pedro Aranda Ziemann", width / 2, height / 2 - 25);
+    text("Izabele Caetano Fossato", width / 2, height / 2 );
+    text("Rafael Luis dos Santos", width / 2, height / 2 + 25);
   }
 }
 
@@ -371,9 +373,9 @@ void mousePressed() {
 
 void atualizarImagensDino() {
   // Atualiza as imagens do Dino com base na cor selecionada
-  dinoRun1 = loadImage("C:/Users/belef/OneDrive/Documentos/Facul/Computação Visual/projeto_jogo/dinogame/dinorun0000" + cor + ".png");
-  dinoRun2 = loadImage("C:/Users/belef/OneDrive/Documentos/Facul/Computação Visual/projeto_jogo/dinogame/dinorun0001" + cor + ".png");
-  dinoJump = loadImage("C:/Users/belef/OneDrive/Documentos/Facul/Computação Visual/projeto_jogo/dinogame/dinoJump0000" + cor + ".png");
-  dinoDuck = loadImage("C:/Users/belef/OneDrive/Documentos/Facul/Computação Visual/projeto_jogo/dinogame/dinoduck0000" + cor + ".png");
-  dinoDuck1 = loadImage("C:/Users/belef/OneDrive/Documentos/Facul/Computação Visual/projeto_jogo/dinogame/dinoduck0001" + cor + ".png");
+  dinoRun1 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinogamecod/dinorun0000" + cor + ".png");
+  dinoRun2 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinogamecod/dinorun0001" + cor + ".png");
+  dinoJump = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinogamecod/dinoJump0000" + cor + ".png");
+  dinoDuck = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinogamecod/dinoduck0000" + cor + ".png");
+  dinoDuck1 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinogamecod/dinoduck0001" + cor + ".png");
 }
