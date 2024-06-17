@@ -1,5 +1,6 @@
 import controlP5.*;
 import java.awt.Font;
+import processing.sound.*;
 
 ControlP5 cp5;
 boolean mostrarMenu = true;
@@ -14,7 +15,7 @@ float speed = 10;
 int groundHeight = 50;
 int playerXpos = 100;
 int highScore = 0;
-String cor = "yellow"; // Variável de cor inicializada como "yellow"
+String cor = "amarelo"; // Variável de cor inicializada como "amarelo"
 
 boolean exibindoCreditos = false;
 
@@ -32,6 +33,10 @@ int estado = 0; // 0 para menu, 1 para jogo
 // Dificuldades
 int dificuldade = 1; // 0 para fácil, 1 para normal, 2 para difícil
 
+SoundFile jumpSound;
+SoundFile deathSound;
+
+
 void setup() {
   size(800, 400);
   frameRate(60);
@@ -39,16 +44,21 @@ void setup() {
   cp5 = new ControlP5(this);
   
   // Carrega as imagens (adaptar o caminho para o seu ambiente)
-  dinoRun1 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinorun0000" + cor + ".png");
-  dinoRun2 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinorun0001" + cor + ".png");
-  dinoJump = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinoJump0000" + cor + ".png");
-  dinoDuck = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinoduck0000" + cor + ".png");
-  dinoDuck1 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinoduck0001" + cor + ".png");
-  smallCactus = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/cactusSmall0000.png");
-  bigCactus = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/cactusBig0000.png");
-  manySmallCactus = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/cactusSmallMany0000.png");
-  bird = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/berd.png");
-  bird1 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/berd2.png");
+  dinoRun1 = loadImage("C:/Users/gustavo.santos/Documents/workspace/dinogame/dinogame/dinorun0000" + cor + ".png");
+  dinoRun2 = loadImage("C:/Users/gustavo.santos/Documents/workspace/dinogame/dinogame/dinorun0001" + cor + ".png");
+  dinoJump = loadImage("C:/Users/gustavo.santos/Documents/workspace/dinogame/dinogame/dinoJump0000" + cor + ".png");
+  dinoDuck = loadImage("C:/Users/gustavo.santos/Documents/workspace/dinogame/dinogame/dinoduck0000" + cor + ".png");
+  dinoDuck1 = loadImage("C:/Users/gustavo.santos/Documents/workspace/dinogame/dinogame/dinoduck0001" + cor + ".png");
+  smallCactus = loadImage("C:/Users/gustavo.santos/Documents/workspace/dinogame/dinogame/cactusSmall0000.png");
+  bigCactus = loadImage("C:/Users/gustavo.santos/Documents/workspace/dinogame/dinogame/cactusBig0000.png");
+  manySmallCactus = loadImage("C:/Users/gustavo.santos/Documents/workspace/dinogame/dinogame/cactusSmallMany0000.png");
+  bird = loadImage("C:/Users/gustavo.santos/Documents/workspace/dinogame/dinogame/berd.png");
+  bird1 = loadImage("C:/Users/gustavo.santos/Documents/workspace/dinogame/dinogame/berd2.png");
+ 
+  jumpSound = new SoundFile(this, "C:/Users/gustavo.santos/Documents/workspace/dinogame/dinogame/dinoJumpSound.mp3");
+  deathSound = new SoundFile(this, "C:/Users/gustavo.santos/Documents/workspace/dinogame/dinogame/dinoDeathSound.mp3");
+  
+  
   
   dino = new Player();
   
@@ -158,6 +168,8 @@ void draw() {
     text("Gustavo Postigo Santos", width / 2, height / 2); 
     text("Gabriel Oliveira Grola", width / 2, height / 2);
     text("João Pedro Aranda Ziemann", width / 2, height / 2);
+    text("Izabele Caetano Fossato", width / 2, height / 2);
+    text("Rafael Luis dos Santos", width / 2, height / 2);
   }
 }
 
@@ -221,8 +233,13 @@ void keyPressed() {
   if (estado == 1) {
     switch (key) {
       case ' ': dino.jump();
+                jumpSound.play();
                 break;
-      case 's': if (!dino.dead) {
+      case CODED: if(keyCode == SHIFT){
+                    dino.doingFlip = true;
+                  }
+                  break;
+      case 's': if (!dino.dead && !dino.doingFlip) {
                   dino.ducking(true);
                 }
                 break;
@@ -245,6 +262,11 @@ void keyReleased() {
                   reset();
                 }
                 break;
+      case ' ':  dino.doingFlip = false;
+                break;
+      case CODED: if(keyCode == SHIFT){
+                    dino.doingFlip = false;
+                  }
     }
   }
 }
@@ -265,7 +287,9 @@ void updateObstacles() {
     }
     moveObstacles();
     dino.update();
+     
   } else {
+    deathSound.play();
     textSize(28);
     fill(0);
     textAlign(CENTER, CENTER);
@@ -301,6 +325,7 @@ void addObstacle() {
 void moveObstacles() {
   for (int i = 0; i < grounds.size(); i++) {
     grounds.get(i).move(speed);
+     grounds.get(i).show();
     if (grounds.get(i).posX < -playerXpos) {
       grounds.remove(i);
       i--;
@@ -354,9 +379,9 @@ void mousePressed() {
 
 void atualizarImagensDino() {
   // Atualiza as imagens do Dino com base na cor selecionada
-  dinoRun1 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinorun0000" + cor + ".png");
-  dinoRun2 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinorun0001" + cor + ".png");
-  dinoJump = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinoJump0000" + cor + ".png");
-  dinoDuck = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinoduck0000" + cor + ".png");
-  dinoDuck1 = loadImage("C:/Users/gustavo.santos/Documents/DocumentosGustavo/dinogame/dinoduck0001" + cor + ".png");
+  dinoRun1 = loadImage("C:/Users/gustavo.santos/Documents/workspace/dinogame/dinogame/dinorun0000" + cor + ".png");
+  dinoRun2 = loadImage("C:/Users/gustavo.santos/Documents/workspace/dinogame/dinogame/dinorun0001" + cor + ".png");
+  dinoJump = loadImage("C:/Users/gustavo.santos/Documents/workspace/dinogame/dinogame/dinoJump0000" + cor + ".png");
+  dinoDuck = loadImage("C:/Users/gustavo.santos/Documents/workspace/dinogame/dinogame/dinoduck0000" + cor + ".png");
+  dinoDuck1 = loadImage("C:/Users/gustavo.santos/Documents/workspace/dinogame/dinogame/dinoduck0001" + cor + ".png");
 }
