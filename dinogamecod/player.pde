@@ -16,7 +16,7 @@ class Player{
   }
   
   void jump(){
-    
+    jumpSound.play();
     if(posY == 0){
       gravity = 1.2;
       velY = 16;
